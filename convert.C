@@ -24,7 +24,7 @@ int convert(std::string filename) {
     std::cout << "Failed to find directory: PWGHF_D2H_NonPromptLctopKpiLoose_0_100 in file: " << filename << std::endl;
     return 0;
 }
-
+/*
      std::string prefix = "new_";
      std::filesystem::path filePath(file->GetName());
      std::string name = filePath.filename().string();
@@ -34,7 +34,20 @@ int convert(std::string filename) {
 //return 0;
   
     TFile *newFile = TFile::Open(newFilename.c_str(), "RECREATE");
+*/
+    
+    std::string prefix = "new_";
+    std::filesystem::path filePath(file->GetName());
+    std::string name = filePath.filename().string();
+    std::string newFilename = prefix + name;
 
+    // specify output directory
+    std::string outdir = "/Users/oveis/Desktop/child1_extra/temp/";
+    newFilename = outdir + newFilename; // append directory to filename
+
+    cout << newFilename.c_str() << endl;
+
+    TFile *newFile = TFile::Open(newFilename.c_str(), "RECREATE");
 
     TTree *myTree = (TTree *)myDir->Get("treeMLLc");
     TTree *newTree = new TTree("treeMLLc_new", "New tree with selected branches");
@@ -166,7 +179,7 @@ void merge() {
 */
 
 void merge(const std::string& dir_path) {
-    TFile *mergedFile = TFile::Open("mergedAnalysisResults_final_PID_geometry.root", "RECREATE");
+    TFile *mergedFile = TFile::Open("mergedAnalysisResults_2.root", "RECREATE");
     TChain *mergedTree = new TChain("treeMLLc_new");
 
     std::vector<std::string> files;
@@ -268,7 +281,8 @@ void convert_all_files(std::string directory) {
 
 int myfunction() {
         
-    convert_all_files("/home/oveis/Downloads/child2_part2/");
+    convert_all_files("/Users/oveis/Desktop/child1_extra/2/");
+    merge("/Users/oveis/Desktop/child1_extra/temp/");
     return 0;
 }
 
